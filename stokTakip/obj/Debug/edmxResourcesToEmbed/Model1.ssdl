@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="stokTakipModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'stokTakip.dbo.Hesap' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Hesap">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="k_adi" />
+      <PropertyRef Name="sifre" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="k_adi" Type="nvarchar" MaxLength="64" Nullable="false" />
+    <Property Name="sifre" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'stokTakip.dbo.Stok' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Stok">
+    <Key>
+      <PropertyRef Name="urunKodu" />
+      <PropertyRef Name="urunAdi" />
+      <PropertyRef Name="tarih" />
+      <PropertyRef Name="miktar" />
+      <PropertyRef Name="urunDurum" />
+    </Key>
+    <Property Name="urunKodu" Type="int" Nullable="false" />
+    <Property Name="urunAdi" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="tarih" Type="datetime" Nullable="false" />
+    <Property Name="miktar" Type="float" Nullable="false" />
+    <Property Name="urunDurum" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Urunler">
+    <Key>
+      <PropertyRef Name="urunKodu" />
+    </Key>
+    <Property Name="urunKodu" Type="int" Nullable="false" />
+    <Property Name="urunAdi" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="urunDurum" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Urunler_Urunler">
+    <End Role="Urunler" Type="Self.Urunler" Multiplicity="1" />
+    <End Role="Urunler1" Type="Self.Urunler" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Urunler">
+        <PropertyRef Name="urunKodu" />
+      </Principal>
+      <Dependent Role="Urunler1">
+        <PropertyRef Name="urunKodu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="stokTakipModelStoreContainer">
+    <EntitySet Name="Urunler" EntityType="Self.Urunler" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Hesap" EntityType="Self.Hesap" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Hesap].[id] AS [id], 
+    [Hesap].[k_adi] AS [k_adi], 
+    [Hesap].[sifre] AS [sifre]
+    FROM [dbo].[Hesap] AS [Hesap]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Stok" EntityType="Self.Stok" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Stok].[urunKodu] AS [urunKodu], 
+    [Stok].[urunAdi] AS [urunAdi], 
+    [Stok].[tarih] AS [tarih], 
+    [Stok].[miktar] AS [miktar], 
+    [Stok].[urunDurum] AS [urunDurum]
+    FROM [dbo].[Stok] AS [Stok]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Urunler_Urunler" Association="Self.FK_Urunler_Urunler">
+      <End Role="Urunler" EntitySet="Urunler" />
+      <End Role="Urunler1" EntitySet="Urunler" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
